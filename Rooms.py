@@ -1,7 +1,7 @@
 
 class Room:
-    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key'], 'Description' : '...','Enemies': ['statue']},
-             'maze': {'Exits': {'north' : 'garden','west' : 'gate'}, 'Items': ['sword'], 'Description' : '...','Enemies': ['statue']},
+    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key'], 'Description' : '...','Enemies': ['imp']},
+             'maze': {'Exits': {'north' : 'garden','west' : 'gate'}, 'Items': ['sword'], 'Description' : '...','Enemies': []},
              'garden': {'Exits': {'north' : 'entrance', 'south' : 'maze'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
              'entrance': {'Exits': {'south' : 'garden', 'east' : 'ball room', 'west' : 'library'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
              'ballroom': {'Exits': {'west' : 'entrance', 'north' : 'dining room'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
@@ -24,7 +24,9 @@ class Room:
         print(f'Yuo are at the {self.room}')
         print(f"Description: {Room.rooms[self.room]['Description']}")
         print(f"Exit{('s','')[len(self.getexits()) == 1]} in room: {', '.join(self.getexits())}")
-        print(f"Item{('s','')[len(self.getitems()) == 1]} in room: {(', '.join(Room.rooms[self.room]['Items']), 'There are no items')[len(self.getitems()) == 0]}")
+        print(f"Item{('s','')[len(self.getitems()) == 1]} in room: {(', '.join(self.getitems()), 'There are no items')[len(self.getitems()) == 0]}")
+        if len(self.getenemies()) > 0:
+            print(f"Enem{('ies', 'y')[len(self.getenemies()) == 1]} in room: {', '.join(self.getenemies())}")
 
     def changeroom(self, room):
         self.room = room
