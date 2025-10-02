@@ -1,3 +1,4 @@
+from random import randrange
 
 class Player:
     def __init__(self, playername, playeritems, damage, hp):
@@ -24,3 +25,6 @@ class Player:
 
     def heal(self, item):
         pass
+
+    def attack(self):
+        return randrange(0,self.damage)

@@ -1,11 +1,11 @@
 
 class Room:
-    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key'], 'Description' : '...',},
-             'maze': {'Exits': {'north' : 'garden','west' : 'gate'}, 'Items': ['sword'], 'Description' : '...'},
-             'garden': {'Exits': {'north' : 'entrance', 'south' : 'maze'}, 'Items': [], 'Description' : '...'},
-             'entrance': {'Exits': {'south' : 'garden', 'east' : 'ball room', 'west' : 'library'}, 'Items': [], 'Description' : '...'},
-             'ballroom': {'Exits': {'west' : 'entrance', 'north' : 'dining room'}, 'Items': [], 'Description' : '...'},
-             'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance'}, 'Items': [], 'Description' : '...'},}
+    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key'], 'Description' : '...','Enemies': ['statue']},
+             'maze': {'Exits': {'north' : 'garden','west' : 'gate'}, 'Items': ['sword'], 'Description' : '...','Enemies': ['statue']},
+             'garden': {'Exits': {'north' : 'entrance', 'south' : 'maze'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
+             'entrance': {'Exits': {'south' : 'garden', 'east' : 'ball room', 'west' : 'library'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
+             'ballroom': {'Exits': {'west' : 'entrance', 'north' : 'dining room'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
+             'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance'}, 'Items': [], 'Description' : '...'},'Enemies': ['statue']}
 
     def __init__(self, room, locked):
         self.room = room
@@ -16,6 +16,9 @@ class Room:
 
     def getitems(self):
         return Room.rooms[self.room]['Items']
+
+    def getenemies(self):
+        return Room.rooms[self.room]['Enemies']
 
     def look(self):
         print(f'Yuo are at the {self.room}')
