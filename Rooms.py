@@ -1,11 +1,11 @@
 
 class Room:
-    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key'], 'Description' : '...','Enemies': ['imp']},
+    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key'], 'Description' : 'You stand at the entrance to an ancient castle. \nYour first obstacle: A large grey gate, with tall stone walls on either sides.','Enemies': ['imp']},
              'maze': {'Exits': {'north' : 'garden','west' : 'gate'}, 'Items': ['sword'], 'Description' : '...','Enemies': []},
              'garden': {'Exits': {'north' : 'entrance', 'south' : 'maze'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
-             'entrance': {'Exits': {'south' : 'garden', 'east' : 'ball room', 'west' : 'library'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
-             'ballroom': {'Exits': {'west' : 'entrance', 'north' : 'dining room'}, 'Items': [], 'Description' : '...','Enemies': ['statue']},
-             'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance'}, 'Items': [], 'Description' : '...'},'Enemies': ['statue']}
+             'entrance': {'Exits': {'south' : 'garden', 'east' : 'ball room', 'west' : 'library'}, 'Items': [], 'Description' : '...','Enemies': []},
+             'ballroom': {'Exits': {'west' : 'entrance', 'north' : 'dining room'}, 'Items': [], 'Description' : '...','Enemies': []},
+             'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance'}, 'Items': [], 'Description' : '...'},'Enemies': ['wise owl']}
 
     def __init__(self, room, locked):
         self.room = room
@@ -34,3 +34,8 @@ class Room:
     def removeitem(self, item):
         Room.rooms[self.room]['Items'].remove(item)
 
+    def unlock(self,room):
+        self.locked.pop(self.locked.index(room))
+
+    def removeenemy(self,enemy):
+        Room.rooms[self.room]['Enemies'].pop(self.getenemies().index(enemy))

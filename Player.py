@@ -14,8 +14,6 @@ class Player:
     def takeitem(self, item):
         self.playeritems.append(item)
 
-
-
     def stats(self):
         print(f'Inventory: {(", ".join(self.playeritems), "Empty")[len(self.playeritems) == 0]}')
         print(f'Weapon: {self.weapon} \nDamage: {self.damage}')
@@ -28,7 +26,10 @@ class Player:
         self.hp += amount
 
     def heal(self, item):
-        pass
+        med = {'health potion': 9,
+               'bread': 2,
+               'spinach': 100,}
+        self.hp += med[item]
 
     def attack(self):
         return randint(1,self.damage)
@@ -41,6 +42,7 @@ class Player:
 
         if self.weapon != 'fists':
             self.takeitem(self.weapon)
+        if item != 'fists':
             self.playeritems.remove(item)
 
         self.weapon = item

@@ -42,7 +42,7 @@ def fight(e,p1,room):
     if p1.hp > 0:
         print(f'You defeated the {enemy.type}.')
         sleep(1)
-        Room.rooms[room.room]['Enemies'].pop(room.getenemies().index(enemy.type))
+        room.removeenemy(enemy.type)
         return True
     print('You were slain :(')
     return False
@@ -58,6 +58,22 @@ def main():
 
             if command in ('exit', 'quit'):
                 break
+
+            if command == 'commands':
+                print("""----GAME----
+commands: see a list of commands
+look: see information about the room you are in
+stats: see information about your character
+go 'direction': move in a certain direction
+take 'item': take a certain item in the room
+use 'item': use a certain item in your inventory
+equip 'weapon': equip a weapon that is in your inventory
+fight 'enemy': fight a specific enemy in the room
+----COMBAT----
+attack: attack the enemy using your equipped weapon
+block: IN DEVELOPMENT
+heavy attack: IN DEVELOPMENT 
+""")
 
             if command == 'look':
                 room.look()
@@ -75,12 +91,15 @@ def main():
                 roomtomove = room.getexits()[command.split()[1]]
 
                 if roomtomove in room.locked:
-                    print('You may not go there.')
+                    if roomtomove == 'maze':
+                        print("""You walk up to the cold grey metal gate, it towering above you.
+A single copper padlock is all that keeps it closed. Maybe there is a way of opening it""")
+
                     continue
                 room.changeroom(roomtomove)
 
             if command.startswith('take '):
-                item = command.strip('take ')
+                item = command.replace('take ','')
                 if item not in room.getitems():
                     print('Invalid item')
                     continue
@@ -91,10 +110,16 @@ def main():
                 if item == 'sword':
                     print("""You slowly take the sword from the skeletons hand, trying your best not to disturb his peace.
 You notice two small holes engraved on his wrist bone, like he was bitten by an animal.""")
-
+                    if fight('snake',p1,room):
+                        continue
+                    print("""The snake slithers away from your lifeless body, triumphant.
+    A magical fairy appears from thin air and revives you.
+    'How could you die to the first enemy?', it asks.
+    It flies away""")
+                    p1.heal('health potion')
 
             if command.startswith('use '):
-                used = command.strip('use ')
+                used = command.replace('use ','')
                 if used not in p1.playeritems:
                     print('You do not have that item')
                     continue
@@ -102,28 +127,32 @@ You notice two small holes engraved on his wrist bone, like he was bitten by an 
 
                 if used == 'grey key' and room.room == 'gate' and 'maze' in room.locked:
                     print('You use the key to unlock the gate')
-                    room.locked.pop(room.locked.index('maze'))
+                    room.unlock('maze')
 
-            if command.startswith('attack '):
-                enemy = command.strip('attack ')
+
+            if command.startswith('fight '):
+                enemy = command.replace('fight ','')
+                if room.room == 'gate' and enemy in ['gate','lock','padlock',] and 'maze' in room.locked:
+                    print(f'You break the lock open with your {p1.weapon}.')
+                    room.unlock('maze')
+                    continue
                 if enemy not in room.getenemies():
                     print('Enemy does not exist')
                     continue
-                print('attacked enemy!!')
 
                 if fight(enemy,p1,room):
                     continue
                 break
 
             if command.startswith('equip '):
-                weapon = command.strip('equip ')
+                weapon = command.replace('equip ','')
                 if weapon not in ['fists','sword','knife','gun',]:
                     print('Not a valid weapon')
                     continue
                 if weapon == p1.weapon:
                     print('You already have this weapon equipped!')
                     continue
-                if weapon not in p1.playeritems:
+                if weapon not in p1.playeritems and weapon != 'fists':
                     print('You do not have that weapon.')
                     continue
                 p1.equip(weapon)
