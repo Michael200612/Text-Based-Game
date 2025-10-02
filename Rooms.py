@@ -1,8 +1,8 @@
 
 class Room:
-    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key','sword'], 'Enemies': ['imp'], 'Description' : 'You stand at the entrance to an ancient castle. Dead plants and trees surround you, and the sky is overcast\nAhead of you is your first obstacle: A large grey gate, with tall stone walls on either sides.'},
+    rooms = {'gate': {'Exits': {'east' : 'maze'}, 'Items': ['grey key'], 'Enemies': ['imp'], 'Description' : 'You stand at the entrance to an ancient castle. Dead plants and trees surround you, and the sky is overcast\nAhead of you is your first obstacle: A large grey gate, with tall stone walls on either sides.'},
              'maze': {'Exits': {'north' : 'garden','west' : 'gate'}, 'Items': ['sword'], 'Enemies': [],  'Description' : 'You are are in the center of the maze. The skeleton of a man lays on the ground, an old rusting sword still in his hand.'},
-             'garden': {'Exits': {'north' : 'entrance', 'south' : 'maze'}, 'Items': [], 'Enemies': ['statue'],  'Description' : '...'},
+             'garden': {'Exits': {'north' : 'entrance', 'south' : 'maze'}, 'Items': ['item in fountain'], 'Enemies': [],  'Description' : '...'},
              'entrance': {'Exits': {'south' : 'garden', 'east' : 'ball room', 'west' : 'library'}, 'Items': [], 'Description' : '...','Enemies': []},
              'ballroom': {'Exits': {'west' : 'entrance', 'north' : 'dining room'}, 'Items': [], 'Description' : '...','Enemies': []},
              'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance'}, 'Items': [], 'Description' : '...'},'Enemies': ['wise owl']}

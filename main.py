@@ -13,7 +13,7 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def ask(text):
-    x = input(text).lower().strip()
+    x = input(f'{text}\n>>').lower().strip()
     if x in ['yes', 'y']:
         return True
     else:
@@ -22,16 +22,16 @@ def ask(text):
 def maze():
     directions = []
     userswords = []
-    for i in range(5):
+    for i in range(4):
         clear()
         word = choice(['right', 'left', 'straight', 'back'])
         print(word)
-        sleep(1.5)
+        sleep(1)
         clear()
         directions.append(word)
 
-    for i ,name in enumerate(['first', 'second', 'third', 'fourth', 'fifth']):
-        word = input(f'{name} direction\n')
+    for i ,name in enumerate(['first', 'second', 'third', 'fourth']):
+        word = input(f'{name} direction\n').strip().lower()
         userswords.append(word)
 
     if directions == userswords:
@@ -88,7 +88,8 @@ def fight(e,p1,room):
     if p1.hp > 0:
         print(f'You defeated the {enemy.type}.')
         sleep(1)
-        room.removeenemy(enemy.type)
+        if enemy.type != 'snake':
+            room.removeenemy(enemy.type)
         return True
     print('You were slain :(')
     return False
@@ -100,7 +101,7 @@ def main():
     room.changeroom('gate')
     while True:
         try:
-            command = input('\nInput\n').strip().lower()
+            command = input('\n>> ').strip().lower()
 
             if command in ('exit', 'quit'):
                 break
@@ -148,14 +149,15 @@ A single copper padlock is all that keeps it closed. Maybe there is a way of ope
                 if roomtomove == 'maze' and room.room == 'gate':
                     printdelay("""The gate creaks eerily as you push it open, its hinges worn down by time and the environment..""",2)
                     printdelay("""You walk along a large dirt path, eventually coming to the entrance of a maze""",2)
-                    if not ask('Would you like to enter the maze?'):
+                    if not ask('Would you like to enter the maze?\n'):
                         printdelay('You are too scared to enter the maze and run back.',2)
                         continue
                     printdelay("""You enter the maze, searching for many hours to find a path that will lead you somewhere.""", 2)
 
+
                 if roomtomove == 'garden' and room.room == 'maze':
                     printdelay("""You now must find the other exit to the maze.""",2)
-                    printdelay("""While you walk between the tall hedges, you hear faint voices in the wind. They say...""",2)
+                    printdelay("""While you walk between the tall hedges, you hear faint voices in the wind. They say...""",3)
                     if not maze():
                         printdelay("""You could not understand their directions and ended up at the center of the maze again.""",1)
                         continue
@@ -163,6 +165,7 @@ A single copper padlock is all that keeps it closed. Maybe there is a way of ope
 
 
                 room.changeroom(roomtomove)
+                continue
 
 
 
@@ -227,6 +230,9 @@ It flies away""",2)
                     print('You do not have that weapon.')
                     continue
                 p1.equip(weapon)
+
+            else:
+                print("Invalid command\nHint: use 'commands' to see available commands")
 
 
 
