@@ -31,15 +31,15 @@ class Enemy:
             self.hp = 10
 
     def attack(self):
-        choice = 'attack'
-        #choice(['heavy attack','block','attack'])
-        match choice:
+        #choice = 'attack'
+        action = choice(['heavy attack','block','attack'])
+        match action:
             case 'attack':
-                return randint(1, self.level)
+                return action, randint(1, self.level)
             case 'block':
-                return 0
+                return action, 0
             case 'heavy attack':
-                return randint(1, self.level + 2)
+                return action, randint(2, self.level + 2)
             case _:
                 pass
 

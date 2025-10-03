@@ -59,9 +59,6 @@ def movinglogic(room,roomtomove,player):
         printdelay('You make it out of the maze thanks to the help of some unseen force.', 2)
         printdelay("""You approach a beautiful garden, the sound of running water echoing around you""", 2)
 
-
-
-
     return True
 
 
@@ -99,16 +96,28 @@ def askname():
     name = input('Enter your name\n')
     return name
 
+def calculateresult(firstaction,secondaction):
+    match [firstaction,secondaction]:
+        case ['heavy attack','block']:
+            return False, True
+        case ['attack', 'block']:
+            return False, False
+        case ['block', 'block']:
+            return False, False
+        case ['heavy attack', 'attack']:
+
+
 
 def fight(e,player,room):
     enemy = Enemy(e,0,0)
     enemy.assign()
 
-    listo = ['player','enemy','enemy','player']
+    listo = ['enemy','player']
     playeraction = ''
     enemyaction = ''
 
     while enemy.hp > 0 and player.hp > 0:
+        listo.reverse()
         for i in listo:
             if i == 'player':
                 while True:
@@ -123,11 +132,8 @@ def fight(e,player,room):
                         print('You flee the battle.')
                         return True
 
-                    if command == 'attack':
-                        damage = player.attack()
-                        printdelay(f'You attack the {enemy.type} using your {player.weapon}',1)
-                        printdelay(f'You do {damage} damage.',1)
-                        enemy.hurt(damage)
+                    if command in ['attack','heavy attack', 'block']:
+                        playeraction = command
                         break
 
                     if command == 'commands':
@@ -142,9 +148,15 @@ heavy attack: IN DEVELOPMENT""")
                         break
 
             elif enemy.hp > 0:
-                damage = enemy.attack()
-                printdelay(f'the {enemy.type} does {damage} damage.',2)
-                player.hurt(damage)
+                enemyaction, damage = enemy.attack()
+
+
+
+                printdelay(f'{enemy.type} uses {enemyaction}',1)
+
+        print('\nresults\n')
+
+
 
     if player.hp > 0:
         print(f'You defeated the {enemy.type}.')
