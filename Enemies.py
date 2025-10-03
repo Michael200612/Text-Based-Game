@@ -12,7 +12,7 @@ class Enemy:
             self.level = 1
             self.hp = 2
 
-        if self.type == 'snake':
+        if self.type == 'gargoyle':
             self.level = 2
             self.hp = 5
 
