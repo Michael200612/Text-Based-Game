@@ -25,9 +25,20 @@ def ask(text):
 def movinglogic(room,roomtomove,player):
 
     if roomtomove in room.locked:
-        if roomtomove == 'maze':
+        if roomtomove == 'maze' and room.maze == 'gate':
             printdelay("""You walk up to the cold grey metal gate, it towering above you.
     A single padlock is all that keeps it closed. Maybe there is a way of opening it""", 2)
+
+        if roomtomove == 'entrance' and room.room == 'garden':
+            printdelay('You walk along the thin gravel paths surrounded by many exotic plants, eventually arriving at the doorway of the castle.',2)
+            printdelay('A gargoyle stands guard, its stone eyes following your every move.', 2)
+            printdelay('As you approach, the gargoyle suddenly swivels its head, and leaps towards you.', 2)
+            if not fight('gargoyle', player, room):
+                print('lost')
+            else:
+                print('won')
+                room.unlock(roomtomove)
+
         return False
 
     if roomtomove == 'maze' and room.room == 'gate':
@@ -48,13 +59,7 @@ def movinglogic(room,roomtomove,player):
         printdelay('You make it out of the maze thanks to the help of some unseen force.', 2)
         printdelay("""You approach a beautiful garden, the sound of running water echoing around you""", 2)
 
-    if roomtomove == 'entrance' and room.room == 'garden' and room.room :
-        printdelay('You walk along the thin gravel paths surrounded by many exotic plants, eventually arriving at the doorway of the castle.',2)
-        printdelay('A gargoyle stands guard, its stone eyes following your every move.', 2)
-        printdelay('As you approach, the gargoyle suddenly swivels its head, and leaps towards you.', 2)
-        if not fight('gargoyle',player,room):
-            print('lost')
-        print('won')
+
 
 
     return True
@@ -99,7 +104,9 @@ def fight(e,player,room):
     enemy = Enemy(e,0,0)
     enemy.assign()
 
-    listo = ['player','enemy']
+    listo = ['player','enemy','enemy','player']
+    playeraction = ''
+    enemyaction = ''
 
     while enemy.hp > 0 and player.hp > 0:
         for i in listo:
@@ -110,12 +117,15 @@ def fight(e,player,room):
                     command = input('Input\n').strip().lower()
 
                     if command in ['retreat','exit','quit']:
+                        if enemy.type in ['gargoyle']:
+                            printdelay('You may not flee this battle.',1)
+                            break
                         print('You flee the battle.')
                         return True
 
                     if command == 'attack':
                         damage = player.attack()
-                        printdelay(f'You attack the {enemy} using your {player.weapon}',1)
+                        printdelay(f'You attack the {enemy.type} using your {player.weapon}',1)
                         printdelay(f'You do {damage} damage.',1)
                         enemy.hurt(damage)
                         break
@@ -129,6 +139,8 @@ heavy attack: IN DEVELOPMENT""")
                         continue
                     else:
                         printdelay('The pressure of battle gets to you.\nYou stand there motionless.\n(Invalid command)',3)
+                        break
+
             elif enemy.hp > 0:
                 damage = enemy.attack()
                 printdelay(f'the {enemy.type} does {damage} damage.',2)
@@ -145,7 +157,7 @@ heavy attack: IN DEVELOPMENT""")
 
 
 def main():
-    player = Player(askname(), ['chain mail'],2, 10, 'fists','plaid shirt',0,0)
+    player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0)
     room = Room('',['maze','entrance'])
     room.changeroom('garden')
     while True:
@@ -189,7 +201,7 @@ heavy attack: IN DEVELOPMENT
 
                 roomtomove = room.getexits()[command.split()[1]]
 
-                if movinglogic(room, roomtomove):
+                if movinglogic(room, roomtomove, player):
                     room.changeroom(roomtomove)
                 continue
 
@@ -269,6 +281,7 @@ heavy attack: IN DEVELOPMENT
                         print('You do not have that set of armour')
                         continue
                     player.equiparmour(item)
+
 
             else:
                 print("Invalid command\nHint: use 'commands' to see available commands")

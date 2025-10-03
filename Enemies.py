@@ -1,4 +1,6 @@
-from random import randint
+from random import randint,choice
+from unittest import case
+
 
 class Enemy:
     def __init__(self, type, level, hp):
@@ -12,24 +14,34 @@ class Enemy:
             self.level = 1
             self.hp = 2
 
-        if self.type == 'gargoyle':
+        elif self.type == 'gargoyle':
             self.level = 2
             self.hp = 5
 
-        elif self.type == 'statue':
+        elif self.type == 'rat':
             self.level = 3
             self.hp = 5
 
-        elif self.type == 'goblin':
+        elif self.type == 'zombie':
             self.level = 5
             self.hp = 7
 
-        elif self.type == 'orc':
+        elif self.type == 'suit of armour':
             self.level = 7
             self.hp = 10
 
     def attack(self):
-        return randint(1, self.level)
+        choice = 'attack'
+        #choice(['heavy attack','block','attack'])
+        match choice:
+            case 'attack':
+                return randint(1, self.level)
+            case 'block':
+                return 0
+            case 'heavy attack':
+                return randint(1, self.level + 2)
+            case _:
+                pass
 
     def hurt(self, damage):
         self.hp -= damage
