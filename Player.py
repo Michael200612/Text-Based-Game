@@ -1,12 +1,15 @@
 from random import randint
 
 class Player:
-    def __init__(self, playername, playeritems, damage, hp, weapon):
+    def __init__(self, playername, playeritems, damage, hp, weapon,armour, armourhp, gold ):
         self.playername = playername
         self.playeritems = playeritems
         self.damage = damage
         self.hp = hp
         self.weapon = weapon
+        self.armour = armour
+        self.armourhp = armourhp
+        self.gold = gold
 
     def getplayername(self):
         return self.playername
@@ -17,13 +20,16 @@ class Player:
     def stats(self):
         print(f'Inventory: {(", ".join(self.playeritems), "Empty")[len(self.playeritems) == 0]}')
         print(f'Weapon: {self.weapon} \nDamage: {self.damage}')
+        print(f'Armour: {self.armour} \nProtection: {self.armourhp}')
+        print(f'Gold: {self.gold}')
         print(f'HP: {self.hp * "- "}')
 
     def hurt(self, amount):
-        self.hp -= amount
+        if self.armourhp < 1:
+            self.hp -= amount
 
-    def armour(self, amount):
-        self.hp += amount
+        else:
+            self.armourhp -= amount
 
     def heal(self, item):
         med = {'health potion': 9,
@@ -48,3 +54,16 @@ class Player:
         self.weapon = item
         self.damage = weaponslist[item]
 
+    def equiparmour(self, item):
+        armourslist = {'chain mail' : 2,
+                       'plate armour' : 4,
+                       'bomb suit' : 100,}
+
+        if self.armour != 'plaid shirt':
+            self.takeitem(self.armour)
+        self.playeritems.remove(item)
+        self.armour = item
+        self.armourhp = armourslist[item]
+
+    def addgold(self, amount):
+        self.gold += amount

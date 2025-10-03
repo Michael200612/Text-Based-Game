@@ -2,36 +2,45 @@ from Player import Player
 from Rooms import Room
 from Enemies import Enemy
 from time import sleep
-from random import choice
+from random import choice, randrange
 import os
 
 def printdelay(text, delay):
     print(text)
     sleep(delay)
 
+
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
 def ask(text):
-    x = input(f'{text}\n>>').lower().strip()
+    x = input(f'{text}\n>> ').lower().strip()
     if x in ['yes', 'y']:
         return True
     else:
         return False
 
+
+def movinglogic(room):
+
+
 def maze():
     directions = []
     userswords = []
-    for i in range(4):
-        clear()
+    for i in range(5):
         word = choice(['right', 'left', 'straight', 'back'])
+        clear()
+        print('')
+        sleep(0.5)
         print(word)
-        sleep(1)
+        sleep(0.8)
+        print('')
         clear()
         directions.append(word)
 
-    for i ,name in enumerate(['first', 'second', 'third', 'fourth']):
-        word = input(f'{name} direction\n').strip().lower()
+    for i ,name in enumerate(['first', 'second', 'third', 'fourth','fifth']):
+        word = input(f'{name} direction\n>> ').strip().lower()
         userswords.append(word)
 
     if directions == userswords:
@@ -39,9 +48,17 @@ def maze():
     return False
 
 
+def garden(player):
+    chance = randrange(1, 1 + (player.gold + 1) * (player.gold + 1))
+    if chance == 1:
+        return True
+    return False
+
+
 def askname():
     name = input('Enter your name\n')
     return name
+
 
 def fight(e,p1,room):
     enemy = Enemy(e,0,0)
@@ -75,30 +92,27 @@ def fight(e,p1,room):
     block: IN DEVELOPMENT
     heavy attack: IN DEVELOPMENT""")
                         continue
-
                     else:
                         printdelay('The pressure of battle gets to you.\nYou stand there motionless.\n(Invalid command)',3)
-
             elif enemy.hp > 0:
                 damage = enemy.attack()
                 print(f'the {enemy.type} does {damage} damage.')
                 p1.hurt(damage)
                 sleep(2)
-
     if p1.hp > 0:
         print(f'You defeated the {enemy.type}.')
         sleep(1)
-        if enemy.type != 'snake':
-            room.removeenemy(enemy.type)
+        #if enemy.type != 'snake':
+        room.removeenemy(enemy.type)
         return True
     print('You were slain :(')
     return False
 
 
 def main():
-    p1 = Player(askname(), [],1, 10, 'fists')
-    room = Room('',['maze'])
-    room.changeroom('gate')
+    p1 = Player(askname(), ['chain mail'],2, 10, 'fists','plaid shirt',1,0)
+    room = Room('',[''])
+    room.changeroom('maze')
     while True:
         try:
             command = input('\n>> ').strip().lower()
@@ -114,7 +128,7 @@ stats: see information about your character
 go 'direction': move in a certain direction
 take 'item': take a certain item in the room
 use 'item': use a certain item in your inventory
-equip 'weapon': equip a weapon that is in your inventory
+equip 'item': equip an item that is in your inventory
 fight 'enemy': fight a specific enemy in the room
 exit / quit: exit game
 ----COMBAT----
@@ -123,6 +137,7 @@ attack: attack the enemy using your equipped weapon
 block: IN DEVELOPMENT
 heavy attack: IN DEVELOPMENT 
 """)
+                continue
 
             if command == 'look':
                 room.look()
@@ -130,21 +145,18 @@ heavy attack: IN DEVELOPMENT
 
             if command == 'stats':
                 p1.stats()
+                continue
 
             if command.startswith('go '):
-
                 if command.split()[1] not in room.getexits():
                     print('Invalid direction')
                     continue
-
                 roomtomove = room.getexits()[command.split()[1]]
-
                 if roomtomove in room.locked:
                     if roomtomove == 'maze':
                         printdelay("""You walk up to the cold grey metal gate, it towering above you.
-A single copper padlock is all that keeps it closed. Maybe there is a way of opening it""",2)
+A single padlock is all that keeps it closed. Maybe there is a way of opening it""",2)
                     continue
-
 
                 if roomtomove == 'maze' and room.room == 'gate':
                     printdelay("""The gate creaks eerily as you push it open, its hinges worn down by time and the environment..""",2)
@@ -154,19 +166,21 @@ A single copper padlock is all that keeps it closed. Maybe there is a way of ope
                         continue
                     printdelay("""You enter the maze, searching for many hours to find a path that will lead you somewhere.""", 2)
 
-
                 if roomtomove == 'garden' and room.room == 'maze':
-                    printdelay("""You now must find the other exit to the maze.""",2)
-                    printdelay("""While you walk between the tall hedges, you hear faint voices in the wind. They say...""",3)
+                    printdelay("""You now must find the other exit to the maze.""",3)
+                    printdelay("""While you walk between the tall hedges, you hear faint voices in the wind. They say...""",4)
                     if not maze():
                         printdelay("""You could not understand their directions and ended up at the center of the maze again.""",1)
                         continue
-                    print('You make it out of the maze')
+                    printdelay('You make it out of the maze thanks to the help of some unseen force.',2)
+                    printdelay("""You approach a beautiful garden, the sound of running water echoing around you""",2)
 
+                if roomtomove == 'entrance' and room.room == 'garden':
+                    printdelay('You walk along the thin gravel paths surrounded by many exotic plants, eventually arriving at the doorway of the castle.',2)
+                    printdelay('The heavy oak door stands ajar, Inviting you in.', 2)
 
                 room.changeroom(roomtomove)
                 continue
-
 
 
             if command.startswith('take '):
@@ -175,22 +189,28 @@ A single copper padlock is all that keeps it closed. Maybe there is a way of ope
                     print('Invalid item')
                     continue
 
-                p1.takeitem(item)
-                room.removeitem(item)
+
+                if item not in ['gold coin']:
+                    p1.takeitem(item)
+                    room.removeitem(item)
 
                 if item == 'sword' and room.room == 'maze':
-                    printdelay("""You slowly take the sword from the skeletons hand, trying your best not to disturb his peace.
-You notice two small holes engraved on his wrist bone, like he was bitten by an animal.
-A snake reveals itself from the hedges of the maze, hissing at you and approaching you with speed.""",3)
-                    if fight('snake',p1,room):
-                        printdelay('You rest for a while after the intense battle, and try to regain your strength.',1)
-                        p1.heal('bread')
+                    printdelay("""You slowly take the sword from the skeletons hand, trying your best not to disturb his peace.""",2)
+                    printdelay("""There is heavy damage to his skull, as well as many gnaw mark on his bones. You wonder what happened...""",2)
+                    printdelay("""You notice a small leather bag of gold coins laying next to him.""",2)
+                    p1.addgold(2)
+
+                if item == 'gold coin' and room.room == 'garden':
+                    printdelay("""You put your hand in the cold water and reach down to pick up a coin.""",2)
+                    if garden(p1):
+                        printdelay("""You take a coin from the fountain.\nThe strange creatures do not seem happy.""",2)
+                        p1.addgold(1)
                         continue
-                    printdelay("""The snake slithers away from your lifeless body, triumphant.
-A magical fairy appears from thin air and revives you.
-'How could you die to the first enemy?', it asks.
-It flies away""",2)
-                    p1.heal('health potion')
+                    printdelay("""You feel a sharp pain on your hand, and quickly pull your hand out from the water.\nOne of the creatures bit you.""",2)
+                    p1.hurt(1)
+
+                continue
+
 
             if command.startswith('use '):
                 used = command.replace('use ','')
@@ -202,7 +222,6 @@ It flies away""",2)
                 if used == 'grey key' and room.room == 'gate' and 'maze' in room.locked:
                     print('You use the key to unlock the gate')
                     room.unlock('maze')
-
 
             if command.startswith('fight '):
                 enemy = command.replace('fight ','')
@@ -218,18 +237,28 @@ It flies away""",2)
                     continue
                 break
 
+
             if command.startswith('equip '):
-                weapon = command.replace('equip ','')
-                if weapon not in ['fists','sword','knife','gun',]:
-                    print('Not a valid weapon')
-                    continue
-                if weapon == p1.weapon:
-                    print('You already have this weapon equipped!')
-                    continue
-                if weapon not in p1.playeritems and weapon != 'fists':
-                    print('You do not have that weapon.')
-                    continue
-                p1.equip(weapon)
+                item = command.replace('equip ','')
+                if item in ['fists','sword','knife','gun',]:
+
+                    if item == p1.weapon:
+                        print('You already have this weapon equipped!')
+                        continue
+                    if item not in p1.playeritems and item != 'fists':
+                        print('You do not have that weapon.')
+                        continue
+                    p1.equip(item)
+
+                elif item in ['chain mail','plate armour','bomb suit']:
+
+                    if item == p1.armour:
+                        print('You already have this set of armour equipped!')
+                        continue
+                    if item not in p1.playeritems:
+                        print('You do not have that set of armour')
+                        continue
+                    p1.equiparmour(item)
 
             else:
                 print("Invalid command\nHint: use 'commands' to see available commands")
