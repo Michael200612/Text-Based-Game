@@ -3,10 +3,11 @@ from unittest import case
 
 
 class Enemy:
-    def __init__(self, type, level, hp):
+    def __init__(self, type, level, hp, item):
         self.type = type
         self.level = level
         self.hp = hp
+        self.item = item
 
     def assign(self):
 
@@ -21,14 +22,17 @@ class Enemy:
         elif self.type == 'rat':
             self.level = 3
             self.hp = 6
+            self.item = 'rat meat'
 
         elif self.type == 'zombie':
             self.level = 5
             self.hp = 7
+            self.item = 'gold coin'
 
         elif self.type == 'suit of armour':
             self.level = 7
             self.hp = 10
+            self.item = 'plate armour'
 
     def attack(self):
         

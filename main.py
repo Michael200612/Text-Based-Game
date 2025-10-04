@@ -105,13 +105,15 @@ def takinglogic(room,item,player):
             printdelay('"Hoot!", Says the owl, "I have some items for you traveler... but I am far too hungry to do business right now. Hoot!"',2)
             return False
 
-        library(player)
+        rich = library(player)
 
         printdelay('The owl flies silently away and watches you with its large yellow eyes from the dark',2)
 
+        if not rich:
+            return False
+
     if item in ['gold coin', 'health potion',]:
         return False
-
     return True
 
 
@@ -187,7 +189,7 @@ def calculateresult(firstaction,secondaction):
 
 
 def fight(enemytype,player,room):
-    enemy = Enemy(enemytype,0,0)
+    enemy = Enemy(enemytype,0,0,'')
     enemy.assign()
     firstaction = ''
     secondaction = ''
@@ -213,21 +215,18 @@ def fight(enemytype,player,room):
                     if command in ['attack', 'heavy attack', 'block']:
                         playeraction = command
                         if not firstaction:
-                            print(f'f: {command}')
                             firstaction = command
                         else:
-                            print(f's: {command}')
                             secondaction = command
                         playerdamage = player.attack(command)
-
                         break
 
                     if command == 'commands':
                         print("""----COMBAT----
 retreat: exit the battle. (warning: The enemy will have healed if you decide to fight them again)
 attack: attack the enemy using your equipped weapon
-block: IN DEVELOPMENT
-heavy attack: IN DEVELOPMENT""")
+block: block the enemies attack to take less damage
+heavy attack: inflict more damage on your enemy """)
                         continue
                     else:
                         printdelay('The pressure of battle gets to you.\nYou stand there motionless.\n(Invalid command)',3)
@@ -264,8 +263,9 @@ heavy attack: IN DEVELOPMENT""")
         secondaction = ''
         
     if player.hp > 0:
-        print(f'You defeated the {enemy.type}.')
-        sleep(1)
+        printdelay(f'You defeated the {enemy.type}.',1)
+        if enemy.item:
+            player.takeitem(enemy.item)
         if enemy.type not in ['gargoyle']:
             room.removeenemy(enemy.type)
         return True
@@ -276,7 +276,7 @@ heavy attack: IN DEVELOPMENT""")
 def main():
     player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0,10)
     room = Room('',['maze','entrance','laboratory','watch tower'])
-    room.changeroom('library')
+    room.changeroom('kitchen')
     while True:
         try:
             command = input('\n>> ').strip().lower()
@@ -298,8 +298,8 @@ exit / quit: exit game
 ----COMBAT----
 retreat: exit the battle. (warning: The enemy will have healed if you decide to fight them again)
 attack: attack the enemy using your equipped weapon
-block: IN DEVELOPMENT
-heavy attack: IN DEVELOPMENT 
+block: block the enemies attack to take less damage
+heavy attack: inflict more damage on your enemy 
 """)
                 continue
 
