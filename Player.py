@@ -45,8 +45,16 @@ class Player:
         self.hp += med[item]
         print(f'You health goes up {med[item]} points')
 
-    def attack(self):
-        return randint(1,self.damage)
+    def attack(self,action):
+        match action:
+            case 'attack':
+                return randint(1,self.damage)
+            case 'heavy attack':
+                return randint(1+2,self.damage+2)
+            case 'block':
+                return 0
+            case _:
+                pass
 
     def equip(self, item):
         print(f'You take the {item} and hold it firmly in your hand')

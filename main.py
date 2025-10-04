@@ -98,23 +98,47 @@ def askname():
 
 def calculateresult(firstaction,secondaction):
     match [firstaction,secondaction]:
+        case ['attack', 'block'] | ['block', 'block'] | ['block','attack']:
+            return False, False
         case ['heavy attack','block']:
             return False, True
-        case ['attack', 'block']:
-            return False, False
-        case ['block', 'block']:
-            return False, False
+        case ['block','heavy attack']:
+            return True, False
         case ['heavy attack', 'attack']:
+            result = choice([True, False ,False])
+            if result:
+                return False, True
+            else:
+                return True, False
+        case ['attack','heavy attack']:
+            result = choice([True, False ,False])
+            if result:
+                return True, False
+            else:
+                return False, True
+        case ['heavy attack', 'heavy attack']:
+            result = choice([True, False])
+            if result:
+                return False, True 
+            else:
+                return True, False
+        case ['attack', 'attack']:
+            result = choice([True, False])
+            if result:
+                return False, True 
+            else:
+                return True, False
+        case _:
+            print('UMMMMMMMMM')
 
 
 
-def fight(e,player,room):
-    enemy = Enemy(e,0,0)
+def fight(enemytype,player,room):
+    enemy = Enemy(enemytype,0,0)
     enemy.assign()
-
+    firstaction = ''
+    secondaction = ''
     listo = ['enemy','player']
-    playeraction = ''
-    enemyaction = ''
 
     while enemy.hp > 0 and player.hp > 0:
         listo.reverse()
@@ -132,8 +156,15 @@ def fight(e,player,room):
                         print('You flee the battle.')
                         return True
 
-                    if command in ['attack','heavy attack', 'block']:
-                        playeraction = command
+                    if command in ['attack', 'heavy attack', 'block']:
+                        if not firstaction:
+                            print(f'f: {command}')
+                            firstaction = command
+                        else:
+                            print(f's: {command}')
+                            secondaction = command
+                        playerdamage = player.attack(command)
+
                         break
 
                     if command == 'commands':
@@ -148,15 +179,31 @@ heavy attack: IN DEVELOPMENT""")
                         break
 
             elif enemy.hp > 0:
-                enemyaction, damage = enemy.attack()
-
-
+                enemyaction, enemydamage = enemy.attack()
+                if not firstaction:
+                    firstaction = enemyaction
+                else:
+                    secondaction = enemyaction
 
                 printdelay(f'{enemy.type} uses {enemyaction}',1)
 
-        print('\nresults\n')
+        printdelay('\nresults\n',2)
+        first, second = calculateresult(firstaction,secondaction)
+        if listo[0] == 'player':
+            playerhurt = first
+            enemyhurt = second
+        else:
+            playerhurt = second
+            enemyhurt = first
 
+        if playerhurt:
+            player.hurt(enemydamage)
+        if enemyhurt:
+            enemy.hurt(playerdamage)
 
+        firstaction = ''
+        secondaction = ''
+        
 
     if player.hp > 0:
         print(f'You defeated the {enemy.type}.')
@@ -171,7 +218,7 @@ heavy attack: IN DEVELOPMENT""")
 def main():
     player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0)
     room = Room('',['maze','entrance'])
-    room.changeroom('garden')
+    room.changeroom('gate')
     while True:
         try:
             command = input('\n>> ').strip().lower()

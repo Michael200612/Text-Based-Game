@@ -31,7 +31,7 @@ class Enemy:
             self.hp = 10
 
     def attack(self):
-        #choice = 'attack'
+        
         action = choice(['heavy attack','block','attack'])
         match action:
             case 'attack':
