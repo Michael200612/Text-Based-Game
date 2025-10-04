@@ -105,13 +105,13 @@ def calculateresult(firstaction,secondaction):
         case ['block','heavy attack']:
             return True, False
         case ['heavy attack', 'attack']:
-            result = choice([True, False ,False])
+            result = choice([True, False ,False, False])
             if result:
                 return False, True
             else:
                 return True, False
         case ['attack','heavy attack']:
-            result = choice([True, False ,False])
+            result = choice([True, False ,False, False])
             if result:
                 return True, False
             else:
@@ -132,7 +132,6 @@ def calculateresult(firstaction,secondaction):
             print('UMMMMMMMMM')
 
 
-
 def fight(enemytype,player,room):
     enemy = Enemy(enemytype,0,0)
     enemy.assign()
@@ -142,10 +141,11 @@ def fight(enemytype,player,room):
 
     while enemy.hp > 0 and player.hp > 0:
         listo.reverse()
+        printdelay(f'{listo[0]}s turn to attack',1)
         for i in listo:
             if i == 'player':
                 while True:
-                    print(f'Enemies health: {enemy.hp * "- "}')
+                    print(f'Enemys health: {enemy.hp * "- "}')
                     print(f'Your health: {player.hp * "- "}')
                     command = input('Input\n').strip().lower()
 
@@ -157,6 +157,7 @@ def fight(enemytype,player,room):
                         return True
 
                     if command in ['attack', 'heavy attack', 'block']:
+                        playeraction = command
                         if not firstaction:
                             print(f'f: {command}')
                             firstaction = command
@@ -184,10 +185,7 @@ heavy attack: IN DEVELOPMENT""")
                     firstaction = enemyaction
                 else:
                     secondaction = enemyaction
-
                 printdelay(f'{enemy.type} uses {enemyaction}',1)
-
-        printdelay('\nresults\n',2)
         first, second = calculateresult(firstaction,secondaction)
         if listo[0] == 'player':
             playerhurt = first
@@ -197,9 +195,16 @@ heavy attack: IN DEVELOPMENT""")
             enemyhurt = first
 
         if playerhurt:
+            if playeraction == 'block':
+                enemyaction -= 2
+            printdelay(f'The {enemy.type} does {enemydamage} points of damage', 2)
             player.hurt(enemydamage)
+
         if enemyhurt:
+            if enemyaction == 'block':
+                playerdamage -= 2
             enemy.hurt(playerdamage)
+            printdelay(f'You do {playerdamage} points of damage', 2)
 
         firstaction = ''
         secondaction = ''

@@ -12,7 +12,7 @@ class Enemy:
 
         if self.type == 'imp':
             self.level = 1
-            self.hp = 2
+            self.hp = 5
 
         elif self.type == 'gargoyle':
             self.level = 2
@@ -20,7 +20,7 @@ class Enemy:
 
         elif self.type == 'rat':
             self.level = 3
-            self.hp = 5
+            self.hp = 6
 
         elif self.type == 'zombie':
             self.level = 5
