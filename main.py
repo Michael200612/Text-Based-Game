@@ -21,25 +21,45 @@ def ask(text):
     else:
         return False
 
+def library(player):
+    if player.gold < 2:
+        printdelay('"Hoot! Come back when you have more gold"',2)
+        return False
+
+    if player.gold >= 2:
+        if ask('"Hoot! Would you like to buy a health potion?'):
+            player.addgold(-2)
+            player.takeitem('health potion')
+
+    if player.gold >= 3:
+        if ask('"Hoot! Would you like to buy the spell book?'):
+            player.addgold(-3)
+            player.takeitem('spell book')
+    return True
+
 
 def movinglogic(room,roomtomove,player):
 
     if roomtomove in room.locked:
-        if roomtomove == 'maze' and room.maze == 'gate':
-            printdelay("""You walk up to the cold grey metal gate, it towering above you.
-    A single padlock is all that keeps it closed. Maybe there is a way of opening it""", 2)
-
-        if roomtomove == 'entrance' and room.room == 'garden':
-            printdelay('You walk along the thin gravel paths surrounded by many exotic plants, eventually arriving at the doorway of the castle.',2)
-            printdelay('A gargoyle stands guard, its stone eyes following your every move.', 2)
-            printdelay('As you approach, the gargoyle suddenly swivels its head, and leaps towards you.', 2)
-            if not fight('gargoyle', player, room):
-                print('lost')
-            else:
-                print('won')
-                room.unlock(roomtomove)
+        if roomtomove == 'maze' and room.room == 'gate':
+            printdelay("""You walk up to the cold grey metal gate, it towering above you.""",2)
+            printdelay("""A single padlock is all that keeps it closed. Maybe there is a way of opening it""", 2)
+        if roomtomove == 'watch tower' and room.room == 'library':
+            printdelay("""You try the small green painted wooden door. Its locked""", 2)
 
         return False
+
+
+    if roomtomove == 'entrance' and room.room == 'garden':
+        printdelay('You walk along the thin gravel paths surrounded by many exotic plants, eventually arriving at the doorway of the castle.',2)
+        printdelay('A gargoyle stands guard, its stone eyes following your every move.', 2)
+        printdelay('As you approach, the gargoyle suddenly swivels its head, and leaps towards you.', 2)
+        if not fight('gargoyle', player, room):
+            print('lost')
+            return False
+        else:
+            print('won')
+            room.unlock(roomtomove)
 
     if roomtomove == 'maze' and room.room == 'gate':
         printdelay("""The gate creaks eerily as you push it open, its hinges worn down by time and the environment..""",
@@ -61,7 +81,38 @@ def movinglogic(room,roomtomove,player):
 
     return True
 
-def takinglogic(room,item):
+def takinglogic(room,item,player):
+
+
+    if item == 'sword' and room.room == 'maze':
+        printdelay("""You slowly take the sword from the skeletons hand, trying your best not to disturb his peace.""",2)
+        printdelay("""There is heavy damage to his skull, as well as many gnaw mark on his bones. You wonder what happened...""",2)
+        printdelay("""You notice a small leather bag of gold coins laying next to him.""",2)
+        player.addgold(2)
+
+    if item == 'gold coin' and room.room == 'garden':
+        printdelay("""You put your hand in the cold water and reach down to pick up a coin.""",2)
+        if garden(player):
+            printdelay("""You take a coin from the fountain.\nThe strange creatures do not seem happy.""",2)
+            player.addgold(1)
+            return False
+        printdelay("""You feel a sharp pain on your hand, and quickly pull your hand out from the water.\nOne of the creatures bit you.""",2)
+        player.hurt(1)
+
+    if item in ['health potion', 'spell book'] and room.room == 'library':
+        printdelay(f'As you go to take the {item} from the shelf, an owl silently glides down from the shadows, and perches on your arm.',2)
+        if 'rat' in room.rooms['kitchen']['Enemies']:
+            printdelay('"Hoot!", Says the owl, "I have some items for you traveler... but I am far too hungry to do business right now. Hoot!"',2)
+            return False
+
+        library(player)
+
+        printdelay('The owl flies silently away and watches you with its large yellow eyes from the dark',2)
+
+    if item in ['gold coin', 'health potion',]:
+        return False
+
+    return True
 
 
 def maze():
@@ -225,7 +276,7 @@ heavy attack: IN DEVELOPMENT""")
 def main():
     player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0,10)
     room = Room('',['maze','entrance','laboratory','watch tower'])
-    room.changeroom('gate')
+    room.changeroom('library')
     while True:
         try:
             command = input('\n>> ').strip().lower()
@@ -264,9 +315,7 @@ heavy attack: IN DEVELOPMENT
                 if command.split()[1] not in room.getexits():
                     print('Invalid direction')
                     continue
-
                 roomtomove = room.getexits()[command.split()[1]]
-
                 if movinglogic(room, roomtomove, player):
                     room.changeroom(roomtomove)
                 continue
@@ -277,36 +326,11 @@ heavy attack: IN DEVELOPMENT
                 if item not in room.getitems():
                     print('Invalid item')
                     continue
-
-
-                if item not in ['gold coin','health potion',]:
+                if not takinglogic(room, item, player):
+                    continue
+                room.removeitem(item)
+                if item not in ['gold coin']:
                     player.takeitem(item)
-                    room.removeitem(item)
-
-                if item == 'sword' and room.room == 'maze':
-                    printdelay("""You slowly take the sword from the skeletons hand, trying your best not to disturb his peace.""",2)
-                    printdelay("""There is heavy damage to his skull, as well as many gnaw mark on his bones. You wonder what happened...""",2)
-                    printdelay("""You notice a small leather bag of gold coins laying next to him.""",2)
-                    player.addgold(2)
-
-                if item == 'gold coin' and room.room == 'garden':
-                    printdelay("""You put your hand in the cold water and reach down to pick up a coin.""",2)
-                    if garden(player):
-                        printdelay("""You take a coin from the fountain.\nThe strange creatures do not seem happy.""",2)
-                        player.addgold(1)
-                        continue
-                    printdelay("""You feel a sharp pain on your hand, and quickly pull your hand out from the water.\nOne of the creatures bit you.""",2)
-                    player.hurt(1)
-
-                if item in ['health potion', 'spell book'] and room.room == 'library':
-                    printdelay(f'As you go to take the {item} from the shelf, an owl silently glides down from the shadows, and perches on your arm.',2)
-                    if 'rat' in Room.rooms['kitchen']['Enemies']:
-                        continue
-                    if player.gold < 2:
-                        printdelay('"Hoot!", Says the owl, "Come back when you have more money. Hoot!"',2)
-                        continue
-
-
                 continue
 
 
@@ -319,6 +343,10 @@ heavy attack: IN DEVELOPMENT
                 if used == 'grey key' and room.room == 'gate' and 'maze' in room.locked:
                     print('You use the key to unlock the gate')
                     room.unlock('maze')
+
+                if used == 'green key' and room.room == 'library' and 'watch tower' in room.locked:
+                    print('You use the key to unlock the door to the watch tower')
+                    room.unlock('watch tower')
 
             if command.startswith('fight '):
                 enemy = command.replace('fight ','')

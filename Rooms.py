@@ -8,7 +8,7 @@ class Room:
              'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance', 'north' : 'armoury'}, 'Items': ['book','spell book','health potion'],'Enemies': ['ghost'], 'Description' : '...', 'NPC' : []},
              'armoury': {'Exits': {'east' : 'kitchen', 'south' : 'library', 'north' : 'graveyard'}, 'Items': ['chain mail','blue key'],'Enemies': [], 'Description' : '...', 'NPC' : []},
              'kitchen': {'Exits': {'east': 'servants quarters', 'west': 'armoury'},'Items': ['bread'], 'Enemies': ['rat'], 'Description': '...', 'NPC': []},
-             'graveyard': {'Exits': {'south' : 'graveyard', 'east' : 'laboratory'},'Items': ['shovel'], 'Enemies': ['zombie', 'zombie', 'zombie'], 'Description': '...', 'NPC': []}
+             'graveyard': {'Exits': {'south' : 'graveyard', 'east' : 'laboratory'},'Items': ['shovel'], 'Enemies': ['zombie', 'zombie', 'zombie'], 'Description': '...', 'NPC': []},
              'watch tower': {'Exits': {'north': 'library'}, 'Items': ['plate armour'],'Enemies': ['suit of armour'], 'Description': '...', 'NPC': []},
              'laboratory': {'Exits': {'west': 'graveyard'}, 'Items': [''], 'Enemies': [],'Description': '...', 'NPC': []}
              }
