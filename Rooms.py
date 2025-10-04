@@ -4,9 +4,13 @@ class Room:
              'maze': {'Exits': {'north' : 'garden','west' : 'gate'}, 'Items': ['sword'], 'Enemies': [],  'Description' : 'You are in the center of the maze. The skeleton of a man lays on the ground, an old rusting sword still in his hand.', 'NPC' : []},
              'garden': {'Exits': {'north' : 'entrance', 'south' : 'maze'}, 'Items': ['gold coin'], 'Enemies': [],  'Description' : 'You stand in a large garden, with a stone fountain in the center.\nYou see gold coins glistening at the bottom, while strange eel like creatures swim around in the clear blue water.', 'NPC' : []},
              'entrance': {'Exits': {'south' : 'garden', 'east' : 'grand hall', 'west' : 'library'}, 'Items': [],'Enemies': [], 'Description' : '...', 'NPC' : []},
-             'grand hall': {'Exits': {'west' : 'entrance', 'north' : 'servants quarters'}, 'Items': [],'Enemies': [], 'Description' : '...', 'NPC' : []},
-             'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance', 'north' : 'armoury'}, 'Items': ['book'],'Enemies': ['rat'], 'Description' : '...', 'NPC' : []},
-             'armoury': {'Exits': {'east' : 'kitchen', 'south' : 'library', 'north' : 'graveyard'}, 'Items': ['chain mail'],'Enemies': ['suit of armour'], 'Description' : '...', 'NPC' : []}
+             'grand hall': {'Exits': {'west' : 'entrance', 'north' : 'servants quarters'}, 'Items': ['green key'],'Enemies': [], 'Description' : '...', 'NPC' : []},
+             'library': {'Exits': {'south' : 'watch tower', 'east' : 'entrance', 'north' : 'armoury'}, 'Items': ['book','spell book','health potion'],'Enemies': ['ghost'], 'Description' : '...', 'NPC' : []},
+             'armoury': {'Exits': {'east' : 'kitchen', 'south' : 'library', 'north' : 'graveyard'}, 'Items': ['chain mail','blue key'],'Enemies': [], 'Description' : '...', 'NPC' : []},
+             'kitchen': {'Exits': {'east': 'servants quarters', 'west': 'armoury'},'Items': ['bread'], 'Enemies': ['rat'], 'Description': '...', 'NPC': []},
+             'graveyard': {'Exits': {'south' : 'graveyard', 'east' : 'laboratory'},'Items': ['shovel'], 'Enemies': ['zombie', 'zombie', 'zombie'], 'Description': '...', 'NPC': []}
+             'watch tower': {'Exits': {'north': 'library'}, 'Items': ['plate armour'],'Enemies': ['suit of armour'], 'Description': '...', 'NPC': []},
+             'laboratory': {'Exits': {'west': 'graveyard'}, 'Items': [''], 'Enemies': [],'Description': '...', 'NPC': []}
              }
 
 

@@ -61,6 +61,8 @@ def movinglogic(room,roomtomove,player):
 
     return True
 
+def takinglogic(room,item):
+
 
 def maze():
     directions = []
@@ -95,6 +97,7 @@ def garden(player):
 def askname():
     name = input('Enter your name\n')
     return name
+
 
 def calculateresult(firstaction,secondaction):
     match [firstaction,secondaction]:
@@ -209,7 +212,6 @@ heavy attack: IN DEVELOPMENT""")
         firstaction = ''
         secondaction = ''
         
-
     if player.hp > 0:
         print(f'You defeated the {enemy.type}.')
         sleep(1)
@@ -221,8 +223,8 @@ heavy attack: IN DEVELOPMENT""")
 
 
 def main():
-    player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0)
-    room = Room('',['maze','entrance'])
+    player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0,10)
+    room = Room('',['maze','entrance','laboratory','watch tower'])
     room.changeroom('gate')
     while True:
         try:
@@ -277,7 +279,7 @@ heavy attack: IN DEVELOPMENT
                     continue
 
 
-                if item not in ['gold coin']:
+                if item not in ['gold coin','health potion',]:
                     player.takeitem(item)
                     room.removeitem(item)
 
@@ -295,6 +297,15 @@ heavy attack: IN DEVELOPMENT
                         continue
                     printdelay("""You feel a sharp pain on your hand, and quickly pull your hand out from the water.\nOne of the creatures bit you.""",2)
                     player.hurt(1)
+
+                if item in ['health potion', 'spell book'] and room.room == 'library':
+                    printdelay(f'As you go to take the {item} from the shelf, an owl silently glides down from the shadows, and perches on your arm.',2)
+                    if 'rat' in Room.rooms['kitchen']['Enemies']:
+                        continue
+                    if player.gold < 2:
+                        printdelay('"Hoot!", Says the owl, "Come back when you have more money. Hoot!"',2)
+                        continue
+
 
                 continue
 

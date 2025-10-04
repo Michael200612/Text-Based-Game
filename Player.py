@@ -4,7 +4,7 @@ from random import randint
 
 
 class Player:
-    def __init__(self, playername, playeritems, damage, hp, weapon,armour, armourhp, gold ):
+    def __init__(self, playername, playeritems, damage, hp, weapon,armour, armourhp, gold , maxhp):
         self.playername = playername
         self.playeritems = playeritems
         self.damage = damage
@@ -13,6 +13,7 @@ class Player:
         self.armour = armour
         self.armourhp = armourhp
         self.gold = gold
+        self.maxhp = maxhp
 
     def getplayername(self):
         return self.playername
@@ -42,8 +43,12 @@ class Player:
         med = {'health potion': 9,
                'bread': 2,
                'spinach': 100,}
-        self.hp += med[item]
-        print(f'You health goes up {med[item]} points')
+        if 10 < self.hp + med[item]:
+            self.hp = 10
+            print("You are at full health")
+        else:
+            self.hp += med[item]
+            print(f'You health goes up {med[item]} points')
 
     def attack(self,action):
         match action:
