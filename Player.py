@@ -1,10 +1,10 @@
 from random import randint
-
+from time import sleep
 
 
 
 class Player:
-    def __init__(self, playername, playeritems, damage, hp, weapon,armour, armourhp, gold , maxhp):
+    def __init__(self, playername, playeritems, damage, hp, weapon,armour, armourhp, gold ):
         self.playername = playername
         self.playeritems = playeritems
         self.damage = damage
@@ -13,14 +13,17 @@ class Player:
         self.armour = armour
         self.armourhp = armourhp
         self.gold = gold
-        self.maxhp = maxhp
+        
 
     def getplayername(self):
         return self.playername
 
     def takeitem(self, item):
         print(f'You pick up the {item}')
-        self.playeritems.append(item)
+        if item == 'gold coin':
+            self.addgold(1)
+        else:
+            self.playeritems.append(item)
 
     def stats(self):
         print(f'Inventory: {(", ".join(self.playeritems), "Empty")[len(self.playeritems) == 0]}')
@@ -66,6 +69,7 @@ class Player:
         weaponslist = {'sword' : 4,
                        'knife' : 5,
                        'fists' : 2,
+                       'shovel' : 7,
                        'gun' : 100,}
 
         if self.weapon != 'fists':
@@ -77,16 +81,78 @@ class Player:
         self.damage = weaponslist[item]
 
     def equiparmour(self, item):
-        print(f'You put on the {item}')
-        armourslist = {'chain mail' : 2,
-                       'plate armour' : 4,
-                       'bomb suit' : 100,}
-
-        if self.armour != 'plaid shirt':
-            self.takeitem(self.armour)
-        self.playeritems.remove(item)
-        self.armour = item
+        armourslist = {'chain mail' : 3,
+                        'plate armour' : 5,
+                        'bomb suit' : 100,}
+        if item != self.armour:
+            print(f'You put on the {item}')
+            if self.armour != 'plaid shirt':
+                self.takeitem(self.armour)
+            self.playeritems.remove(item)
+            self.armour = item
         self.armourhp = armourslist[item]
 
     def addgold(self, amount):
         self.gold += amount
+
+    def use(self, item, room):
+        if item == 'book':
+            print('You open the book to a random page. This is what you read.')
+            sleep(1)
+            match room.room:
+                case 'gate':
+                    print('You are very strong. The lock is very weak')
+                    sleep(1)
+                case 'maze':
+                    print('Equip the sword to use it instead of your fists')
+                    sleep(1)
+                case 'garden':
+                    print('Tossing a coin in the fountain may grant your wish')
+                    sleep(1)
+                case 'entrance':
+                    pass
+                case 'grand hall':
+                    pass
+                case 'library':
+                    print('Owls enjoy eating rodents')
+                    sleep(1)
+                case 'watch tower':
+                    pass
+                case 'armoury':
+                    print('Equip the armour to wear it')
+                    sleep(1)
+                case 'dungeon':
+                    pass
+                case 'grave yard':
+                    print('Kill the zombies to get gold coins')
+                case 'laboratory':
+                    print('')
+                case 'greenhouse':
+                    print('')
+        elif item in ['bread','health potion', 'spinach']:
+            print(f'You consume the {item}')
+            sleep(1)
+        elif item == 'map':
+            print("""
++-----------+-------------+
+|   Grave   |             |
+|   Yard    |  Laboratory |
+|           |             |
+|----   ----|----    -----|-------------+
+|           |             |             |
+|  Armoury  |   Dungeon   |  Kitchen    |
+|           |             |             |
++---    ----|-------------|-----    ----+
+|           |             |    Grand    |
+|  Library     Entrance        Hall     |
+|           |             |             |
+|---    ----|----    -----|-------------+
+|   Watch   |             |    Green    |
+|   Tower   |   Garden         House    |
+|           |             |             |
+|-----------|----    -----|-------------+
+|           |             |
+|   Gate         Maze     |
+|           |             |
++-----------+-------------+
+""")

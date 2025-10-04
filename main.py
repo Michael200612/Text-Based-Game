@@ -44,22 +44,25 @@ def movinglogic(room,roomtomove,player):
         if roomtomove == 'maze' and room.room == 'gate':
             printdelay("""You walk up to the cold grey metal gate, it towering above you.""",2)
             printdelay("""A single padlock is all that keeps it closed. Maybe there is a way of opening it""", 2)
+            return False
         if roomtomove == 'watch tower' and room.room == 'library':
-            printdelay("""You try the small green painted wooden door. Its locked""", 2)
-
-        return False
-
-
+            printdelay("You try the small green painted wooden door. Its locked.", 2)
+            return False
+        if roomtomove == 'laboratory' and room.room == 'graveyard':
+            printdelay('You try to open the large blueish metal door. Its locked.',2)
+            return False
+        
     if roomtomove == 'entrance' and room.room == 'garden':
         printdelay('You walk along the thin gravel paths surrounded by many exotic plants, eventually arriving at the doorway of the castle.',2)
         printdelay('A gargoyle stands guard, its stone eyes following your every move.', 2)
         printdelay('As you approach, the gargoyle suddenly swivels its head, and leaps towards you.', 2)
         if not fight('gargoyle', player, room):
-            print('lost')
-            return False
+            pass
         else:
-            print('won')
+            printdelay('The gargoyle crumbles into pieces, turning to powder as it falls down to the ground.',2)
+            printdelay('You are now free to enter',1)
             room.unlock(roomtomove)
+        return False
 
     if roomtomove == 'maze' and room.room == 'gate':
         printdelay("""The gate creaks eerily as you push it open, its hinges worn down by time and the environment..""",
@@ -112,7 +115,7 @@ def takinglogic(room,item,player):
         if not rich:
             return False
 
-    if item in ['gold coin', 'health potion',]:
+    if item in ['gold coin']:
         return False
     return True
 
@@ -249,7 +252,7 @@ heavy attack: inflict more damage on your enemy """)
 
         if playerhurt:
             if playeraction == 'block':
-                enemyaction -= 2
+                enemydamage -= 2
             printdelay(f'The {enemy.type} does {enemydamage} points of damage', 2)
             player.hurt(enemydamage)
 
@@ -263,6 +266,7 @@ heavy attack: inflict more damage on your enemy """)
         secondaction = ''
         
     if player.hp > 0:
+        player.equiparmour(player.armour)
         printdelay(f'You defeated the {enemy.type}.',1)
         if enemy.item:
             player.takeitem(enemy.item)
@@ -274,9 +278,9 @@ heavy attack: inflict more damage on your enemy """)
 
 
 def main():
-    player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0,10)
+    player = Player(askname(), ['chain mail','sword'],2, 10, 'fists','plaid shirt',0,0)
     room = Room('',['maze','entrance','laboratory','watch tower'])
-    room.changeroom('kitchen')
+    room.changeroom('graveyard')
     while True:
         try:
             command = input('\n>> ').strip().lower()
@@ -326,11 +330,9 @@ heavy attack: inflict more damage on your enemy
                 if item not in room.getitems():
                     print('Invalid item')
                     continue
-                if not takinglogic(room, item, player):
-                    continue
-                room.removeitem(item)
-                if item not in ['gold coin']:
-                    player.takeitem(item)
+                if takinglogic(room, item, player):
+                    room.removeitem(item)
+                player.takeitem(item)
                 continue
 
 
@@ -340,13 +342,21 @@ heavy attack: inflict more damage on your enemy
                     print('You do not have that item')
                     continue
 
+                player.use(used,room)
+
                 if used == 'grey key' and room.room == 'gate' and 'maze' in room.locked:
-                    print('You use the key to unlock the gate')
+                    print('You use the key to unlock the gate.')
                     room.unlock('maze')
 
                 if used == 'green key' and room.room == 'library' and 'watch tower' in room.locked:
-                    print('You use the key to unlock the door to the watch tower')
+                    print('You use the key to unlock the door to the watch tower.')
                     room.unlock('watch tower')
+
+                if used == 'blue key' and room.room == 'graveyard' and 'laboratory' in room.locked:
+                    printdelay('You use the key to unlock the door to the laboratory.',2)
+                    room.unlock('watch tower')
+
+                continue
 
             if command.startswith('fight '):
                 enemy = command.replace('fight ','')
