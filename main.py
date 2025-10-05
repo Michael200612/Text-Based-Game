@@ -2,7 +2,7 @@ from Player import Player
 from Rooms import Room
 from Enemies import Enemy
 from time import sleep
-from random import choice, randrange
+from random import choice, randint
 import os
 from test import nuclearbomb
 
@@ -37,6 +37,8 @@ def tower():
     printdelay(''.join(field),1.5)
     clear()
     answer = input('How many orcs did you see?\n>> ')
+    if answer == 'i give up':
+            return True
     if answer == str(orcs):
         return True
     return False
@@ -74,6 +76,8 @@ def laboratory():
     for i ,name in enumerate(['first', 'second', 'third', 'fourth','fifth']):
         word = input(f'Amount of gems on {name} shelf\n>> ').strip().lower()
         userwords.append(word)
+        if word == 'i give up':
+            return True
     if userwords == listo:
         return True
     return False
@@ -138,10 +142,10 @@ def takinglogic(room,item,player):
     if item == 'sword' and room.room == 'maze':
         printdelay("""You slowly take the sword from the skeletons hand, trying your best not to disturb his peace.""",2)
         printdelay("""There is heavy damage to his skull, as well as many gnaw mark on his bones. You wonder what happened...""",2)
-        printdelay("""You notice a small leather bag of gold coins laying next to him.""",2)
-        player.addgold(2)
+        
 
     if item == 'gold coin' and room.room == 'garden':
+    
         printdelay("""You put your hand in the cold water and reach down to pick up a coin.""",2)
         if garden(player):
             printdelay("""You take a coin from the fountain.\nThe strange creatures do not seem happy.""",2)
@@ -201,18 +205,17 @@ def maze():
     for i ,name in enumerate(['first', 'second', 'third', 'fourth','fifth']):
         word = input(f'{name} direction\n>> ').strip().lower()
         userswords.append(word)
-
+        if word == 'i give up':
+            return True
     if directions == userswords:
         return True
     return False
 
 
 def garden(player):
-    x = True
-    if x:
-        return True
-        x = False
-    chance = randrange(1, 1 + (player.gold + 1) + (player.gold + 1))
+    amount = player.gold
+    
+    chance = randint(1, amount + 1)
     if chance == 1:
         return True
     return False
@@ -355,7 +358,7 @@ heavy attack: inflict more damage on your enemy """)
 def main():
     player = Player(askname(), [],2, 10, 'fists','plaid shirt',0,0)
     room = Room('',['maze','entrance','laboratory','watch tower','dungeon'])
-    room.changeroom('laboratory') 
+    room.changeroom('gate') 
     while True:
         try:
             command = input('\n>> ').strip().lower()
@@ -391,6 +394,20 @@ heavy attack: inflict more damage on your enemy
 
             if command == 'stats':
                 player.stats()
+                continue
+
+            if command == 'xyz':
+                player.addgold(100)
+                player.takeitem('gun')
+                player.takeitem('bomb suit')
+                player.takeitem('spinach')
+                continue
+
+            if command.startswith('xyz teleport '):
+                if command.replace('xyz teleport ','') not in Room.rooms:
+                    print('Room does not exist')
+                    continue
+                room.changeroom(command.replace('xyz teleport ','')) 
                 continue
 
             if command.startswith('go '):
@@ -439,6 +456,7 @@ heavy attack: inflict more damage on your enemy
                 if used == 'gold key' and room.room == 'laboratory' and 'dungeon' in room.locked:
                     printdelay('You use the key to unlock the door to the dungeon.',2)
                     room.unlock('dungeon')
+
 
                 continue
 

@@ -47,7 +47,7 @@ class Player:
                'bread': 2,
                'spinach': 100,
                'chesee' : 4}
-        if 10 < self.hp + med[item]:
+        if 10 < self.hp + med[item] and item != 'spinach':
             self.hp = 10
             print("You are at full health")
         else:
@@ -103,34 +103,39 @@ class Player:
             sleep(1)
             match room.room:
                 case 'gate':
-                    print('You are very strong. The lock is very weak')
+                    print('You are very strong. The lock is very weak.\n(Also, "xyz" is a hidden command!)')
                     sleep(1)
                 case 'maze':
                     print('Equip the sword to use it instead of your fists')
                     sleep(1)
                 case 'garden':
-                    print('Tossing a coin in the fountain may grant your wish')
+                    print('Do not be too greedy')
                     sleep(1)
                 case 'entrance':
-                    pass
+                    print('Use the map to see the layout of the rooms')
+                    sleep(1)
                 case 'grand hall':
-                    pass
+                    print('Defeat the animated suit of armour to wear it')
+                    sleep(1)
                 case 'library':
                     print('Owls enjoy eating rodents')
                     sleep(1)
                 case 'watch tower':
-                    pass
+                    print('Giving up can help you in some situations...')
+                    sleep(1)
                 case 'armoury':
                     print('Equip the armour to wear it')
                     sleep(1)
                 case 'dungeon':
-                    pass
+                    print('Defeat the evil wizard to win the game')
+                    sleep(1)
                 case 'grave yard':
-                    print('Kill the zombies to get gold coins')
+                    print('Defeat the zombies to get gold coins')
+                    sleep(1)
                 case 'laboratory':
-                    print('')
-                case 'greenhouse':
-                    print('')
+                    print('The laboratory has been said to be the birth place of all the strange creatures...')
+                    sleep(1)
+
         elif item in ['bread','health potion', 'spinach', 'cheese']:
             print(f'You consume the {item}')
             self.heal(item)
