@@ -13,7 +13,7 @@ class Enemy:
 
         if self.type == 'imp':
             self.level = 1
-            self.hp = 5
+            self.hp = 1
 
         elif self.type == 'gargoyle':
             self.level = 2
@@ -29,9 +29,19 @@ class Enemy:
             self.hp = 7
             self.item = 'gold coin'
 
-        elif self.type == 'suit of armour':
+        elif self.type == 'giant rat':
             self.level = 7
+            self.hp = 8
+            
+
+        elif self.type == 'shadow wizard':
+            self.level = 8
             self.hp = 10
+
+
+        elif self.type == 'suit of armour':
+            self.level = 6
+            self.hp = 8
             self.item = 'plate armour'
 
     def attack(self):

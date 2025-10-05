@@ -19,7 +19,7 @@ class Player:
         return self.playername
 
     def takeitem(self, item):
-        print(f'You pick up the {item}')
+        print(f'You put the {item} in your bag')
         if item == 'gold coin':
             self.addgold(1)
         else:
@@ -43,9 +43,10 @@ class Player:
 
     def heal(self, item):
 
-        med = {'health potion': 9,
+        med = {'health potion': 6,
                'bread': 2,
-               'spinach': 100,}
+               'spinach': 100,
+               'chesee' : 4}
         if 10 < self.hp + med[item]:
             self.hp = 10
             print("You are at full health")
@@ -81,7 +82,8 @@ class Player:
         self.damage = weaponslist[item]
 
     def equiparmour(self, item):
-        armourslist = {'chain mail' : 3,
+        armourslist = {'plaid shirt' : 0,
+                        'chain mail' : 3,
                         'plate armour' : 5,
                         'bomb suit' : 100,}
         if item != self.armour:
@@ -129,8 +131,10 @@ class Player:
                     print('')
                 case 'greenhouse':
                     print('')
-        elif item in ['bread','health potion', 'spinach']:
+        elif item in ['bread','health potion', 'spinach', 'cheese']:
             print(f'You consume the {item}')
+            self.heal(item)
+            self.playeritems.remove(item)
             sleep(1)
         elif item == 'map':
             print("""
