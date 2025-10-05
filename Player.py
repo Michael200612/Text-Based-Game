@@ -46,7 +46,7 @@ class Player:
         med = {'health potion': 6,
                'bread': 2,
                'spinach': 100,
-               'chesee' : 4}
+               'cheese' : 4}
         if 10 < self.hp + med[item] and item != 'spinach':
             self.hp = 10
             print("You are at full health")
@@ -71,6 +71,7 @@ class Player:
                        'knife' : 5,
                        'fists' : 2,
                        'shovel' : 7,
+                       'spell book': 8
                        'gun' : 100,}
 
         if self.weapon != 'fists':
@@ -129,7 +130,7 @@ class Player:
                 case 'dungeon':
                     print('Defeat the evil wizard to win the game')
                     sleep(1)
-                case 'grave yard':
+                case 'graveyard':
                     print('Defeat the zombies to get gold coins')
                     sleep(1)
                 case 'laboratory':
@@ -145,7 +146,7 @@ class Player:
             print("""
 +-----------+-------------+
 |   Grave   |             |
-|   Yard    |  Laboratory |
+|   Yard       Laboratory |
 |           |             |
 |----   ----|----    -----|-------------+
 |           |             |             |
@@ -156,10 +157,10 @@ class Player:
 |  Library     Entrance        Hall     |
 |           |             |             |
 |---    ----|----    -----|-------------+
-|   Watch   |             |    Green    |
-|   Tower   |   Garden         House    |
-|           |             |             |
-|-----------|----    -----|-------------+
+|   Watch   |             |        
+|   Tower   |   Garden    |     
+|           |             |            
+|-----------|----    -----|
 |           |             |
 |   Gate         Maze     |
 |           |             |

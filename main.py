@@ -299,6 +299,7 @@ def fight(enemytype,player,room):
                         playerdamage = player.attack(command)
                         break
 
+
                     if command == 'commands':
                         print("""----COMBAT----
 retreat: exit the battle. (warning: The enemy will have healed if you decide to fight them again)
@@ -362,11 +363,9 @@ def main():
     while True:
         try:
             command = input('\n>> ').strip().lower()
-
             if command in ('exit', 'quit'):
                 break
             clear()
-
 
             if command == 'commands':
                 print("""----GAME----
@@ -419,7 +418,6 @@ heavy attack: inflict more damage on your enemy
                     room.changeroom(roomtomove)
                 continue
 
-
             if command.startswith('take '):
                 item = command.replace('take ','')
                 if item not in room.getitems():
@@ -431,33 +429,25 @@ heavy attack: inflict more damage on your enemy
                     player.takeitem(item)
                 continue
 
-
             if command.startswith('use '):
                 used = command.replace('use ','')
                 if used not in player.playeritems:
                     print('You do not have that item')
                     continue
-
                 player.use(used,room)
-
                 if used == 'grey key' and room.room == 'gate' and 'maze' in room.locked:
                     print('You use the key to unlock the gate.')
                     room.unlock('maze')
-
                 if used == 'green key' and room.room == 'library' and 'watch tower' in room.locked:
                     print('You use the key to unlock the door to the watch tower.')
                     room.unlock('watch tower')
-
                 if used == 'blue key' and room.room == 'graveyard' and 'laboratory' in room.locked:
                     printdelay('You use the key to unlock the door to the laboratory.',2)
                     printdelay('As the door opens, you see a tall figure in the laboratory run out of view into the shadows, and hear the sound of a metal door slam shut.',2)
                     room.unlock('laboratory')
-
                 if used == 'gold key' and room.room == 'laboratory' and 'dungeon' in room.locked:
                     printdelay('You use the key to unlock the door to the dungeon.',2)
                     room.unlock('dungeon')
-
-
                 continue
 
             if command.startswith('fight '):
@@ -469,17 +459,15 @@ heavy attack: inflict more damage on your enemy
                 if enemy not in room.getenemies():
                     print('Enemy does not exist')
                     continue
-
                 if fight(enemy,player,room):
                     continue
                 elif (player.playername).lower() == 'ryan':
                     nuclearbomb()
                 break
 
-
             if command.startswith('equip '):
                 item = command.replace('equip ','')
-                if item in ['fists','sword','knife','gun',]:
+                if item in ['fists','sword','knife','gun','shovel','spell book']:
 
                     if item == player.weapon:
                         print('You already have this weapon equipped!')
@@ -490,7 +478,6 @@ heavy attack: inflict more damage on your enemy
                     player.equip(item)
 
                 elif item in ['chain mail','plate armour','bomb suit']:
-
                     if item == player.armour:
                         print('You already have this set of armour equipped!')
                         continue
@@ -499,15 +486,10 @@ heavy attack: inflict more damage on your enemy
                         continue
                     player.equiparmour(item)
 
-
             else:
                 print("Invalid command\nHint: use 'commands' to see available commands")
 
-
-
-
-
-        except EOFError:
+        except:
             pass
 
 main()
