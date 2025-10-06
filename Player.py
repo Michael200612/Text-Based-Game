@@ -119,7 +119,7 @@ class Player:
                     print('Defeat the animated suit of armour to wear it')
                     sleep(1)
                 case 'library':
-                    print('Owls enjoy eating rodents')
+                    print('The kitchen is infested with rodents')
                     sleep(1)
                 case 'watch tower':
                     print('Giving up can help you in some situations...')

@@ -362,6 +362,9 @@ def main():
     room.changeroom('gate') 
     while True:
         try:
+            if 'shadow wizard' not in Room.rooms['dungeon']['Enemies']:
+                printdelay('You win the game! :)',2)
+                break
             command = input('\n>> ').strip().lower()
             if command in ('exit', 'quit'):
                 break
