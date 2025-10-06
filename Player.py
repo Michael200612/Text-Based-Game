@@ -71,7 +71,7 @@ class Player:
                        'knife' : 5,
                        'fists' : 2,
                        'shovel' : 7,
-                       'spell book': 8
+                       'spell book': 8,
                        'gun' : 100,}
 
         if self.weapon != 'fists':

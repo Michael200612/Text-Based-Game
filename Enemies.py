@@ -1,5 +1,5 @@
 from random import randint,choice
-from unittest import case
+
 
 
 class Enemy:
