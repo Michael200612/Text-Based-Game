@@ -4,7 +4,6 @@ from Enemies import Enemy
 from time import sleep
 from random import choice, randint
 import os
-from test import nuclearbomb
 
 
 def printdelay(text, delay):
@@ -470,8 +469,6 @@ heavy attack: inflict more damage on your enemy
                     continue
                 if fight(enemy,player,room):
                     continue
-                elif player.playername.lower() == 'ryan':
-                    nuclearbomb()
                 break
 
             elif command.startswith('equip '):
