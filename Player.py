@@ -1,8 +1,6 @@
 from random import randint
 from time import sleep
 
-
-
 class Player:
     def __init__(self, playername, playeritems, damage, hp, weapon,armour, armourhp, gold ):
         self.playername = playername
@@ -13,7 +11,6 @@ class Player:
         self.armour = armour
         self.armourhp = armourhp
         self.gold = gold
-        
 
     def getplayername(self):
         return self.playername
@@ -63,7 +60,7 @@ class Player:
             case 'block':
                 return 0
             case _:
-                pass
+                return 0
 
     def equip(self, item):
         print(f'You take the {item} and hold it firmly in your hand')

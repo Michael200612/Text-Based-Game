@@ -19,6 +19,10 @@ class Enemy:
             self.level = 2
             self.hp = 5
 
+        elif self.type == 'gremlin':
+            self.level = 6
+            self.hp = 7
+
         elif self.type == 'rat':
             self.level = 3
             self.hp = 6

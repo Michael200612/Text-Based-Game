@@ -10,10 +10,9 @@ class Room:
              'dungeon': {'Exits': {'north' : 'laboratory'},'Items': [], 'Enemies': ['shadow wizard'], 'Description': 'The wizard stands in the shadows of the dungeon, only being illuminated by a purple glow from his staff.'},
              'graveyard': {'Exits': {'south' : 'armoury', 'east' : 'laboratory'},'Items': ['shovel'], 'Enemies': ['zombie', 'zombie', 'zombie'], 'Description': 'The small plot of land is surrounded by a short metal fence, with many tombstones filling the cramped space.\nTwo of the graves seem to have been dug up.'},
              'watch tower': {'Exits': {'north': 'library'}, 'Items': ['blue key','health potion'],'Enemies': [], 'Description': 'The circular stone room is cramped and cold, the wind blowing in from the many arrow slits in the walls.'},
-             'laboratory': {'Exits': {'west': 'graveyard','south' : 'dungeon'}, 'Items': ['health potion','gold key'], 'Enemies': ['gargoyle','giant rat'],'Description': 'Large vats of liquid steam in the laboratory, with many strange potions and objects on the shelves.\n'},
+             'laboratory': {'Exits': {'west': 'graveyard','south' : 'dungeon'}, 'Items': ['health potion','gold key'], 'Enemies': ['gremlin','giant rat'],'Description': 'Large vats of liquid steam in the laboratory, with many strange potions and objects on the shelves.\n'},
              'kitchen': {'Exits': {'south': 'grand hall'}, 'Items': ['bread','knife','cheese'], 'Enemies': ['rat'], 'Description': 'Cobwebs fill every corner and dust is on every surface.\nRodents scurry amount the old shelves where some stale food is kept. '}
              }
-
 
     def __init__(self, room, locked):
         self.room = room
@@ -28,15 +27,13 @@ class Room:
     def getenemies(self):
         return Room.rooms[self.room]['Enemies']
 
-
     def look(self):
-        print(f'Yuo are at the {self.room}')
+        print(f'You are at the {self.room}')
         print(f"Description: {Room.rooms[self.room]['Description']}")
         print(f"Exit{('s','')[len(self.getexits()) == 1]} in room: {', '.join(self.getexits())}")
         print(f"Item{('s','')[len(self.getitems()) == 1]} in room: {(', '.join(self.getitems()), 'There are no items')[len(self.getitems()) == 0]}")
         if len(self.getenemies()) > 0:
             print(f"Enem{('ies', 'y')[len(self.getenemies()) == 1]} in room: {', '.join(self.getenemies())}")
-
 
     def changeroom(self, room):
         self.room = room

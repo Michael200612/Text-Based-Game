@@ -27,7 +27,7 @@ def ask(text):
 def tower():
     orcs = 0
     field = []
-    for i in range(7):
+    for i in range(10):
         creature = choice([' cow',' orc'])
         if creature == ' orc':
             orcs += 1
@@ -58,6 +58,7 @@ def library(player, item):
     
     return False
 
+
 def laboratory():
     listo = []
     userwords = []
@@ -82,6 +83,7 @@ def laboratory():
         return True
     return False
 
+
 def movinglogic(room,roomtomove,player):
 
     if roomtomove in room.locked:
@@ -89,14 +91,14 @@ def movinglogic(room,roomtomove,player):
             printdelay("""You walk up to the cold grey metal gate, it towering above you.""",2)
             printdelay("""A single padlock is all that keeps it closed. Maybe there is a way of opening it""", 2)
             return False
-        if roomtomove == 'watch tower' and room.room == 'library':
+        elif roomtomove == 'watch tower' and room.room == 'library':
             printdelay("You try the small green painted wooden door. Its locked.", 2)
             return False
-        if roomtomove == 'laboratory' and room.room == 'graveyard':
+        elif roomtomove == 'laboratory' and room.room == 'graveyard':
             printdelay('You try to open the large blueish metal door. Its locked.',2)
             return False
         
-        if roomtomove == 'entrance' and room.room == 'garden':
+        elif roomtomove == 'entrance' and room.room == 'garden':
             printdelay('You walk along the thin gravel paths surrounded by many exotic plants, eventually arriving at the doorway of the castle.',2)
             printdelay('A gargoyle stands guard, its stone eyes following your every move.', 2)
             printdelay('As you approach, the gargoyle suddenly swivels its head, and leaps towards you.', 2)
@@ -108,22 +110,26 @@ def movinglogic(room,roomtomove,player):
                 room.unlock(roomtomove)
             return False
 
-        if roomtomove == 'dungeon' and room.room == 'laboratory':
+        elif roomtomove == 'dungeon' and room.room == 'laboratory':
             printdelay('You try to open the metal door. Its locked.',2)
             return False
 
     if roomtomove == 'dungeon' and room.room == 'laboratory':
-            if room.getenemies() != []:
+            if room.getenemies():
                 printdelay('You must defeat all enemies in the room.',2)
-                
                 return False
 
-    if roomtomove == 'maze' and room.room == 'gate':
+    elif roomtomove == 'maze' and room.room == 'gate':
         printdelay("""The gate creaks eerily as you push it open, its hinges worn down by time and the environment..""",2)
         printdelay("""You walk along a large dirt path, eventually coming to the entrance of a maze""", 2)
         printdelay("""You enter the maze, searching for many hours to find a path that will lead you somewhere.""", 2)
 
-    if roomtomove == 'garden' and room.room == 'maze':
+    elif roomtomove == 'maze' and room.room == 'gate':
+        printdelay("""The gate creaks eerily as you push it open, its hinges worn down by time and the environment..""",2)
+        printdelay("""You walk along a large dirt path, eventually coming to the entrance of a maze""", 2)
+        printdelay("""You enter the maze, searching for many hours to find a path that will lead you somewhere.""", 2)
+
+    elif roomtomove == 'garden' and room.room == 'maze':
         printdelay("""You now must find the other exit to the maze.""", 3)
         printdelay("""While you walk between the tall hedges, you hear faint voices in the wind. They say...""", 4)
         if not maze():
@@ -132,9 +138,8 @@ def movinglogic(room,roomtomove,player):
         printdelay('You make it out of the maze thanks to the help of some unseen force.', 2)
         printdelay("""You approach a beautiful garden, the sound of running water echoing around you""", 2)
 
-    
-
     return True
+
 
 def takinglogic(room,item,player):
 
@@ -144,7 +149,7 @@ def takinglogic(room,item,player):
         printdelay("""There is heavy damage to his skull, as well as many gnaw mark on his bones. You wonder what happened...""",2)
         
 
-    if item == 'gold coin' and room.room == 'garden':
+    elif item == 'gold coin' and room.room == 'garden':
     
         printdelay("""You put your hand in the cold water and reach down to pick up a coin.""",2)
         if garden(player):
@@ -154,7 +159,7 @@ def takinglogic(room,item,player):
         printdelay("""You feel a sharp pain on your hand, and quickly pull your hand out from the water.\nOne of the creatures bit you.""",2)
         player.hurt(1)
 
-    if item == 'blue key' and room.room == 'watch tower':
+    elif item == 'blue key' and room.room == 'watch tower':
         printdelay('As you go to take the key, you peer out of a widnow at the world below. The skey is dark and grey, but you can make out figures in a field',3)
         printdelay('Suddenly a flash of lightning illuminates the surrondings, letting you catch a glimpse of the creatures',3)
         printdelay('What you see is...',3)
@@ -164,7 +169,7 @@ def takinglogic(room,item,player):
             return False
         printdelay('You quickly go passed the window before they notice you',2)
 
-    if item == 'gold key' and room.room == 'laboratory':
+    elif item == 'gold key' and room.room == 'laboratory':
         printdelay('As you go to take the gold key, you glance to your right and notice shelves with many precious materials on it',3)
         printdelay('What you see is ...',3)
         if not laboratory():
@@ -172,7 +177,7 @@ def takinglogic(room,item,player):
             return False
             
 
-    if item in ['health potion', 'spell book'] and room.room == 'library':
+    elif item in ['health potion', 'spell book'] and room.room == 'library':
         printdelay(f'As you go to take the {item} from the shelf, an owl silently glides down from the shadows, and perches on your arm.',2)
         if 'rat' in room.rooms['kitchen']['Enemies']:
             printdelay('"Hoot!", Says the owl, "I have some items for you traveler... but I am far too hungry to do business right now. Hoot!"',2)
@@ -289,8 +294,7 @@ def fight(enemytype,player,room):
                         player.equiparmour(player.armour)
                         return True
 
-
-                    if command in ['attack', 'heavy attack', 'block']:
+                    elif command in ['attack', 'heavy attack', 'block']:
                         playeraction = command
                         if not firstaction:
                             firstaction = command
@@ -299,13 +303,14 @@ def fight(enemytype,player,room):
                         playerdamage = player.attack(command)
                         break
 
-
-                    if command == 'commands':
+                    elif command == 'commands':
                         print("""----COMBAT----
 retreat: exit the battle. (warning: The enemy will have healed if you decide to fight them again)
 attack: attack the enemy using your equipped weapon
 block: block the enemies attack to take less damage
-heavy attack: inflict more damage on your enemy """)
+heavy attack: inflict more damage on your enemy 
+
+""")
                         continue
                     else:
                         printdelay('Invalid command',3)
@@ -370,7 +375,7 @@ def main():
                 break
             clear()
 
-            if command == 'commands':
+            if command in ['commands','help']:
                 print("""----GAME----
 commands: see a list of commands
 look: see information about the room you are in
@@ -387,6 +392,7 @@ retreat: exit the battle. (warning: The enemy will have healed if you decide to 
 attack: attack the enemy using your equipped weapon
 block: block the enemies attack to take less damage
 heavy attack: inflict more damage on your enemy 
+
 """)
                 continue
 
@@ -394,25 +400,25 @@ heavy attack: inflict more damage on your enemy
                 room.look()
                 continue
 
-            if command == 'stats':
+            elif command == 'stats':
                 player.stats()
                 continue
 
-            if command == 'xyz':
+            elif command == 'xyz':
                 player.addgold(100)
                 player.takeitem('gun')
                 player.takeitem('bomb suit')
                 player.takeitem('spinach')
                 continue
 
-            if command.startswith('xyz teleport '):
+            elif command.startswith('xyz teleport '):
                 if command.replace('xyz teleport ','') not in Room.rooms:
                     print('Room does not exist')
                     continue
                 room.changeroom(command.replace('xyz teleport ','')) 
                 continue
 
-            if command.startswith('go '):
+            elif command.startswith('go '):
                 if command.split()[1] not in room.getexits():
                     print('Invalid direction')
                     continue
@@ -421,7 +427,7 @@ heavy attack: inflict more damage on your enemy
                     room.changeroom(roomtomove)
                 continue
 
-            if command.startswith('take '):
+            elif command.startswith('take '):
                 item = command.replace('take ','')
                 if item not in room.getitems():
                     print('Invalid item')
@@ -441,19 +447,19 @@ heavy attack: inflict more damage on your enemy
                 if used == 'grey key' and room.room == 'gate' and 'maze' in room.locked:
                     print('You use the key to unlock the gate.')
                     room.unlock('maze')
-                if used == 'green key' and room.room == 'library' and 'watch tower' in room.locked:
+                elif used == 'green key' and room.room == 'library' and 'watch tower' in room.locked:
                     print('You use the key to unlock the door to the watch tower.')
                     room.unlock('watch tower')
-                if used == 'blue key' and room.room == 'graveyard' and 'laboratory' in room.locked:
+                elif used == 'blue key' and room.room == 'graveyard' and 'laboratory' in room.locked:
                     printdelay('You use the key to unlock the door to the laboratory.',2)
                     printdelay('As the door opens, you see a tall figure in the laboratory run out of view into the shadows, and hear the sound of a metal door slam shut.',2)
                     room.unlock('laboratory')
-                if used == 'gold key' and room.room == 'laboratory' and 'dungeon' in room.locked:
+                elif used == 'gold key' and room.room == 'laboratory' and 'dungeon' in room.locked:
                     printdelay('You use the key to unlock the door to the dungeon.',2)
                     room.unlock('dungeon')
                 continue
 
-            if command.startswith('fight '):
+            elif command.startswith('fight '):
                 enemy = command.replace('fight ','')
                 if room.room == 'gate' and enemy in ['gate','lock','padlock',] and 'maze' in room.locked:
                     print(f'You break the lock open with your {player.weapon}.')
@@ -464,11 +470,11 @@ heavy attack: inflict more damage on your enemy
                     continue
                 if fight(enemy,player,room):
                     continue
-                elif (player.playername).lower() == 'ryan':
+                elif player.playername.lower() == 'ryan':
                     nuclearbomb()
                 break
 
-            if command.startswith('equip '):
+            elif command.startswith('equip '):
                 item = command.replace('equip ','')
                 if item in ['fists','sword','knife','gun','shovel','spell book']:
 
