@@ -2,6 +2,7 @@
 A small text based game I have made in Python. 
 
 The features:
+
 -A simple turn-based combat system
 
 -Some unique and slightly challenging puzzles
@@ -13,4 +14,3 @@ The features:
 -Different level enemies
 
 -A shop where items can be bought with coins gained from certain actions
-
