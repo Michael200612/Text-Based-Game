@@ -375,12 +375,13 @@ def main():
             clear()
 
             if command in ['commands','help']:
-                print("""----GAME----
+                print("""
+----GAME----
 commands: see a list of commands
 look: see information about the room you are in
 stats: see information about your character
 go 'direction': move in a certain direction
-take 'item': take a certain item in the room
+take 'item' take a certain item in the room
 use 'item': use a certain item in your inventory
 equip 'item': equip an item that is in your inventory
 fight 'enemy': fight a specific enemy in the room

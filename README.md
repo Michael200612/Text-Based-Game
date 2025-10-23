@@ -1,7 +1,7 @@
 # Text-Based-Game
 A small text based game I have made in Python. 
 
-The features:
+# The Features
 
 -A simple turn-based combat system
 

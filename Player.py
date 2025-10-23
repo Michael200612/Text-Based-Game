@@ -35,6 +35,7 @@ class Player:
 
         else:
             print(f'Your armour absorbs some of the damage')
+            sleep(1)
             self.armourhp -= amount - 1
             self.hp -= 1
 

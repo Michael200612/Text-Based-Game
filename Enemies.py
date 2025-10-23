@@ -1,7 +1,5 @@
 from random import randint,choice
 
-
-
 class Enemy:
     def __init__(self, type, level, hp, item):
         self.type = type
